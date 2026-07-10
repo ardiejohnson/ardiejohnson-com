@@ -49,6 +49,9 @@ Never push straight to `main`. The flow is always: branch -> PR -> preview URL -
 - The preview URL for a branch stays the same across pushes, so refresh the same link as the change iterates.
 - Only merging the PR into `main` deploys to the live subdomain.
 
+### Always hand me a preview link — don't ask, just do it
+When a change is ready for me to QA before promoting, **automatically run the preview agent and give me the clickable preview URL.** Do NOT ask "want me to open a preview PR?" or "should I get you a URL?" — the answer is always yes. Producing the preview link is the default final step of any user-facing change, not an opt-in I have to request. The only time to ask first is when something is genuinely blocking (the build fails, or a destructive/irreversible action needs my sign-off) — then say what's wrong instead of shipping a preview. Iterating on a change I'm already previewing? Push to the same branch and re-share the same link so I can refresh.
+
 ### One-time branch protection (do this per repo when ready)
 On GitHub, in each repo: **Settings -> Branches -> Add branch protection rule** (or **Rules -> Rulesets**) for `main`:
 - Enable **"Require a pull request before merging."**
@@ -65,6 +68,7 @@ After that it's a normal portfolio app: preview -> review -> promote, from anywh
 `app-template` is a one-time setup (see make-template.sh) — the GitHub template that makes new apps portable.
 
 ## Hard rules
+- **Always give me a preview link for QA — automatically, without asking.** Any user-facing change ends by running the preview agent and pasting the clickable preview URL. Never ask permission to open a preview; never leave me to request the link.
 - **Never push directly to `main`** — always go through a branch, a PR, and a merge.
 - **Never deploy a broken build.** Run `npm run build` first (skip for static single-file apps).
 - **Never commit secrets.** Client apps use the Supabase anon/public key only — never the service-role key.
