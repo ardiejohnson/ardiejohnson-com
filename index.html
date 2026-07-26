@@ -212,6 +212,8 @@
     .app-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent-4), var(--accent-5), var(--accent-1)); }
     .app-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-3), var(--accent-2), var(--accent-4)); }
     .app-card:nth-child(4)::before { background: linear-gradient(90deg, var(--accent-5), var(--accent-1), var(--accent-3)); }
+    /* FSY Card Maker — the guide-cover brand palette */
+    .app-card.fsy::before { background: linear-gradient(90deg, #D0495F, #6DB3C9, #B5CC6A, #E8A33D); }
 
     /* Footer */
     footer {
@@ -283,8 +285,8 @@
         <div class="app-status"><span class="dot"></span> Live</div>
       </a>
 
-      <a href="https://fsy-card-maker.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">📚</span>
+      <a href="https://fsy-card-maker.ardiejohnson.com" class="app-card live fsy">
+        <img class="app-icon img" src="/icons/fsy.svg" alt="FSY Card Maker logo" width="44" height="44">
         <div class="app-name">FSY Card Maker</div>
         <div class="app-desc">Build and print FSY conversation cards — a discussion question paired with a scripture, across 12 chapters. Autosave, JSON export/import, PDF export.</div>
         <div class="app-status"><span class="dot"></span> Live</div>
