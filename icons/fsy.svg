@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FSY Card Maker mark — the "For the Strength of Youth" guide-cover look:
+     navy tile with the four brand corner triangles and an italic FSY lockup. -->
+<svg width="512" height="512" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="fsyRound"><rect x="0" y="0" width="100" height="100" rx="22" ry="22"/></clipPath>
+  </defs>
+  <g clip-path="url(#fsyRound)">
+    <rect x="0" y="0" width="100" height="100" fill="#143A5E"/>
+    <!-- Corner triangles, guide-cover palette -->
+    <path d="M0 0 H46 L0 46 Z"       fill="#D0495F"/>  <!-- top-left  raspberry -->
+    <path d="M100 0 H54 L100 46 Z"   fill="#6DB3C9"/>  <!-- top-right sky teal -->
+    <path d="M0 100 H46 L0 54 Z"     fill="#B5CC6A"/>  <!-- bottom-left lime -->
+    <path d="M100 100 H54 L100 54 Z" fill="#E8A33D"/>  <!-- bottom-right goldenrod -->
+    <!-- Italic lockup, echoing the card back -->
+    <text x="50" y="52" text-anchor="middle" dominant-baseline="central"
+          font-family="'Open Sans','Segoe UI',system-ui,sans-serif"
+          font-weight="800" font-style="italic" font-size="30"
+          letter-spacing="-1.5" fill="#ffffff">FSY</text>
+  </g>
+</svg>
