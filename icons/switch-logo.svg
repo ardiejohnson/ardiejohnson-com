@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="46 -10 5181 829" width="250" height="40" fill="none" role="img" aria-label="Switch">
   <title>Switch</title>
   <style>
-    .ltr { fill:#111111; animation:ltr 5.2s infinite cubic-bezier(.6,0,.2,1); }
+    .ltr { fill:#9CA3AF; animation:ltr 5.2s infinite cubic-bezier(.6,0,.2,1); }
     .trk { animation:trk 5.2s infinite steps(1,end); }
     .knb { animation:knb 5.2s infinite cubic-bezier(.5,0,.15,1);
             transform-box:view-box; transform-origin:0 0; }
@@ -21,9 +21,9 @@
       65%, 100%  { fill:#3B82F6; }
     }
     @keyframes ltr {
-      0%, 17%    { fill:#111111; }
+      0%, 17%    { fill:#9CA3AF; }
       23%, 59%   { fill:#FFFFFF; }
-      65%, 100%  { fill:#111111; }
+      65%, 100%  { fill:#9CA3AF; }
     }
 
     @media (prefers-reduced-motion:reduce){
