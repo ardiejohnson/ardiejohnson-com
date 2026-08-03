@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="46 -10 5181 829" width="250" height="40" fill="none" role="img" aria-label="Switch">
   <title>Switch</title>
   <style>
-    .ltr { fill:#9CA3AF; animation:ltr 5.2s infinite cubic-bezier(.6,0,.2,1); }
-    .trk { animation:trk 5.2s infinite steps(1,end); }
-    .knb { animation:knb 5.2s infinite cubic-bezier(.5,0,.15,1);
+    .ltr { fill:#9CA3AF; animation:ltr 10.4s infinite cubic-bezier(.6,0,.2,1); }
+    .trk { animation:trk 10.4s infinite steps(1,end); }
+    .knb { animation:knb 10.4s infinite cubic-bezier(.5,0,.15,1);
             transform-box:view-box; transform-origin:0 0; }
 
     @keyframes knb {
