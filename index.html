@@ -215,6 +215,52 @@
     /* FSY Card Maker — the guide-cover brand palette */
     .app-card.fsy::before { background: linear-gradient(90deg, #D0495F, #6DB3C9, #B5CC6A, #E8A33D); }
 
+    /* SWITCH — the product is glass changing state, so the card does it too:
+       one corridor dissolving between clear and private, wordmark over the top. */
+    .app-card.switch::before {
+      background: linear-gradient(90deg, #3B82F6, #93C5FD, #1e293b);
+      z-index: 2;
+    }
+    .switch-art {
+      position: relative;
+      /* Bleeds past the card's 28px padding; the card clips it to the radius. */
+      margin: -28px -28px 18px;
+      height: 158px;
+      overflow: hidden;
+      background: #0b1220;
+    }
+    .switch-glass {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* The private frame is the base; the clear one fades over it and back. */
+    .switch-glass.clear { animation: switchGlass 7s ease-in-out infinite; }
+    @keyframes switchGlass {
+      0%, 8%    { opacity: 0; }
+      42%, 58%  { opacity: 1; }
+      92%, 100% { opacity: 0; }
+    }
+    .switch-logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 170px;
+      height: auto;
+      /* The wordmark's letters animate between near-black and white, so it needs
+         to hold against both a bright frosted pane and the darker clear one.
+         Two shadows: a dark one carries the white letters, a light one the dark. */
+      filter: drop-shadow(0 2px 7px rgba(0, 0, 0, 0.6))
+              drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .switch-glass.clear { animation: none; opacity: 1; }
+    }
+
     /* Footer */
     footer {
       text-align: center;
@@ -324,6 +370,17 @@
         <span class="app-icon">🚗</span>
         <div class="app-name">Los Oviedo Garage</div>
         <div class="app-desc">A bilingual (English/Spanish) site for a family-run used car dealership and service garage in Salt Lake City. Browse the lot by vehicle, with listings the family updates themselves.</div>
+        <div class="app-status"><span class="dot"></span> Live</div>
+      </a>
+
+      <a href="https://switch.ardiejohnson.com" class="app-card live switch">
+        <div class="switch-art" aria-hidden="true">
+          <img class="switch-glass private" src="/icons/switch-private.webp" alt="" width="800" height="500" loading="lazy" decoding="async">
+          <img class="switch-glass clear" src="/icons/switch-clear.webp" alt="" width="800" height="500" loading="lazy" decoding="async">
+          <img class="switch-logo" src="/icons/switch-logo.svg" alt="" width="170" height="27">
+        </div>
+        <div class="app-name">SWITCH</div>
+        <div class="app-desc">Intelligent glass that turns from clear to private at the touch of a button. A marketing site for the product, with a demo you can drag and switch yourself.</div>
         <div class="app-status"><span class="dot"></span> Live</div>
       </a>
 
