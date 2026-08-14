@@ -1,0 +1,39 @@
+# Portfolio CI — makes "checks are green" mean something on every PR.
+# Handles all portfolio app shapes: static single-file apps (no package.json)
+# and repos without a build script pass automatically; buildable apps must build.
+# Canonical copy lives in the ardieworks repo (template/); synced into app-template.
+name: build
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect app type
+        id: detect
+        run: |
+          if [ ! -f package.json ]; then
+            echo "kind=static" >> "$GITHUB_OUTPUT"
+            echo "Static app (no package.json) — nothing to build."
+          elif ! jq -e '.scripts.build' package.json > /dev/null; then
+            echo "kind=nobuild" >> "$GITHUB_OUTPUT"
+            echo "package.json has no build script — nothing to build."
+          else
+            echo "kind=build" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.kind == 'build'
+        with:
+          node-version: 22
+      - name: Install
+        if: steps.detect.outputs.kind == 'build'
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - name: Build
+        if: steps.detect.outputs.kind == 'build'
+        run: npm run build
