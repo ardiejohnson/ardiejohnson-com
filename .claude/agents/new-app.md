@@ -15,6 +15,20 @@ Don't assume "laptop = powerful, web = manual" — check what's actually availab
 - A complete HTML document (has `<!DOCTYPE html>` / `<html>`, or is fully self-contained with inline styles + scripts or CDN-loaded React) -> STATIC app, no build step.
 - A bare `.jsx` / `.tsx` component, or a fragment that imports React -> needs a Vite build.
 
+## HTML that should really be React — check before scaffolding
+Detection says what the file IS; this check says what it should BECOME. When the file is a complete HTML document, score it against these signals before setting anything up.
+
+Signals it's outgrowing the single-file format:
+1. **Multiple screens faked in one page** — show/hide sections acting as navigation between distinct views.
+2. **Lots of interacting state** — many parts of the page updating each other (not just one widget doing one thing).
+3. **A backend is clearly coming** — accounts, saved data, anything that smells like Supabase.
+4. **The file is huge or repetitive** — roughly 1,000+ lines, or the same UI block copy-pasted over and over.
+5. **Ardie has said he'll keep growing it** — described as an ongoing app, not a finished tool.
+
+Signals to leave it as HTML: one screen, self-contained, mostly finished, no backend in sight. Most portfolio tools live here permanently — static is the norm, not the fallback.
+
+**If two or more React signals fire, recommend — never silently convert.** Tell Ardie in plain language which signals fired and ask: onboard as-is (static), or scaffold as React now? Be clear that the React path is a *rebuild* of his markup into components, not a copy-paste. Faithful onboarding of exactly what he pasted stays the DEFAULT — React happens only if he says yes. If he's unsure: recommend React when the backend signal (#3) fired, static otherwise — a later rebuild by frontend-builder is routine and cheap, so erring static costs little.
+
 ## Set it up
 STATIC app:
 1. Save the file as `index.html` at the repo root.
@@ -47,10 +61,11 @@ The apex landing site lives in the `ardiejohnson-com` repo (`index.html`). The n
 
 ## Wire it into the system
 1. Make sure `.claude/agents/`, `.claude/skills/`, and `CLAUDE.md` are present (they come for free if the repo was made from `app-template`; if not, copy them in).
-2. Add the new app to the repos table in CLAUDE.md (repo name + intended subdomain, e.g. `moodboard.ardiejohnson.com`).
-3. Confirm the two portfolio-wide requirements above are done (back-to-home button + homepage card PR).
-4. Confirm the CI workflow is present (`.github/workflows/ci.yml` from app-template) — it's what makes "checks green" mean something on every future PR.
-5. Commit. On a full machine with a fresh repo you can push to main to seed it; in a cloud session, open a PR (the preview flow) so Ardie can QA first.
+2. **Give the app a design point of view — `DESIGN.md` at the repo root.** Invoke the **app-design** skill and run its Phase 0: ask Ardie the five brief questions (who opens this, what they actually want, the one feeling, what it must NOT look like, the one thing they must be able to do) and commit the answers. Apps born without a brief drift generic, and retrofitting one after the UI exists is much harder. Do this even when onboarding a prototype as-is — the brief describes where the app is going, not just what was pasted.
+3. Add the new app to the repos table in CLAUDE.md (repo name + intended subdomain, e.g. `moodboard.ardiejohnson.com`).
+4. Confirm the two portfolio-wide requirements above are done (back-to-home button + homepage card PR).
+5. Confirm the CI workflow is present (`.github/workflows/ci.yml` from app-template) — it's what makes "checks green" mean something on every future PR.
+6. Commit. On a full machine with a fresh repo you can push to main to seed it; in a cloud session, open a PR (the preview flow) so Ardie can QA first.
 
 ## Hosting + subdomain
 The subdomain follows `[appname].ardiejohnson.com`. Always confirm the exact name with Ardie before wiring DNS — don't guess. Hand off to the **launch** agent for Vercel + Supabase + domain wiring; it inventories its own capabilities (Vercel MCP and Supabase MCP work from cloud sessions too now). The one step that stays laptop-only is the GoDaddy DNS record (`~/.godaddy/add-subdomain.sh` — creds live in `~/.godaddy/credentials`, laptop-only, outside every git repo, never print or commit them); from other sessions that step is manual in the GoDaddy dashboard.
