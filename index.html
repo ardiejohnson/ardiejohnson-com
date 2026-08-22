@@ -248,11 +248,11 @@
 
     <div class="statusbar">
       <span class="mark">ARDIEJOHNSON.COM</span>
-      <span class="state"><i class="beacon" aria-hidden="true"></i>16 LIVE</span>
+      <span class="state"><i class="beacon" aria-hidden="true"></i><span data-app-count="num">16</span> LIVE</span>
     </div>
 
     <header class="thesis">
-      <h1>Sixteen live apps, built solo.</h1>
+      <h1><span data-app-count="word">Sixteen</span> live apps, built solo.</h1>
       <p>
         <strong>I'm not an engineer.</strong> I design and ship small, real products
         end&#8209;to&#8209;end — with AI as the whole engineering team. Everything below is
@@ -261,13 +261,13 @@
     </header>
 
     <div class="stats">
-      <div class="stat"><div class="v">16</div><div class="l">Live apps</div></div>
+      <div class="stat"><div class="v" data-app-count="num">16</div><div class="l">Live apps</div></div>
       <div class="stat"><div class="v">1</div><div class="l">Builder</div></div>
       <div class="stat"><div class="v">2025</div><div class="l">Shipping since</div></div>
     </div>
 
     <div class="filterbar" role="group" aria-label="Filter apps by category">
-      <button class="filter" data-cat="all" aria-pressed="true">All 16</button>
+      <button class="filter" data-cat="all" aria-pressed="true">All <span data-app-count="num">16</span></button>
       <button class="filter" data-cat="tools" aria-pressed="false">Tools</button>
       <button class="filter" data-cat="life" aria-pressed="false">Life</button>
       <button class="filter" data-cat="business" aria-pressed="false">Business</button>
@@ -452,7 +452,7 @@
 
       <div class="empty" id="empty" hidden>
         <b>Nothing in that category yet.</b>
-        Tap <strong>All 16</strong> above to see everything that's live.
+        Tap <strong>All <span data-app-count="num">16</span></strong> above to see everything that's live.
       </div>
 
     </main>
@@ -469,6 +469,36 @@
       var buttons = document.querySelectorAll('.filter');
       var rows = document.querySelectorAll('.row[data-cat]');
       var empty = document.getElementById('empty');
+
+      // ---- the app count states itself in five places, so compute it once ----
+      // Adding a row to the list above is all it takes; nothing here needs
+      // editing. The markup keeps the last-known number as a fallback for the
+      // case where this script never runs.
+      var live = [].filter.call(rows, function (r) {
+        return !r.classList.contains('lab');
+      }).length;
+
+      var ONES = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine',
+                  'Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen',
+                  'Seventeen','Eighteen','Nineteen'];
+      var TENS = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+      function inWords(n) {
+        if (n < 20) return ONES[n];
+        if (n < 100) return TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10].toLowerCase() : '');
+        return String(n);
+      }
+
+      [].forEach.call(document.querySelectorAll('[data-app-count]'), function (el) {
+        el.textContent = el.dataset.appCount === 'word' ? inWords(live) : String(live);
+      });
+
+      // <title> and og:title are read by crawlers from the static HTML, so they
+      // can't be computed here. Flag the mismatch instead of letting it rot —
+      // portfolio-status also checks this from the outside.
+      if (document.title.indexOf(inWords(live)) === -1) {
+        console.warn('[ardiejohnson.com] ' + live + ' apps are listed, but <title> and og:title still say "' +
+          document.title + '". Update them in index.html.');
+      }
 
       function apply(cat) {
         var shown = 0;
