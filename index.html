@@ -3,437 +3,494 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ardie Johnson — Apps & Experiments</title>
-  <meta name="description" content="A growing collection of apps, AI experiments, and digital tools by Ardie Johnson." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E" />
+  <title>Ardie Johnson — Sixteen live apps, built solo</title>
+  <meta name="description" content="I'm not an engineer. I design and ship small, real products end-to-end — sixteen of them are live right now. Open any one." />
+  <meta property="og:title" content="Ardie Johnson — Sixteen live apps, built solo" />
+  <meta property="og:description" content="I'm not an engineer. I design and ship small, real products end-to-end — sixteen of them are live right now." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ardiejohnson.com" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23101318'/%3E%3Ccircle cx='50' cy='50' r='17' fill='%230B6E4F'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ===================================================================
+       ardiejohnson.com — "control room"
+       See DESIGN.md at the repo root. Refused by brief: gradients, emoji
+       icons, uniform rounded cards, centered hero, terminal/dev-portfolio
+       costume, monospace body text. Mono is for DATA ONLY.
+       =================================================================== */
 
-    :root {
-      --bg-1: #fff5e6;
-      --bg-2: #ffe0f0;
-      --bg-3: #e0f0ff;
-      --ink: #1a1633;
-      --ink-soft: #4a4366;
-      --accent-1: #ff5fa2;  /* hot pink */
-      --accent-2: #6c5ce7;  /* electric purple */
-      --accent-3: #00cec9;  /* teal */
-      --accent-4: #fdcb6e;  /* sunshine yellow */
-      --accent-5: #ff7f50;  /* coral */
-      --card-shadow: 0 10px 30px rgba(108, 92, 231, 0.18), 0 4px 12px rgba(255, 95, 162, 0.12);
+    :root{
+      --ground:#F4F5F7;
+      --surface:#FFFFFF;
+      --surface-2:#FAFBFC;
+      --ink:#101318;
+      --ink2:#5A616C;
+      --ink3:#78808C;
+      --line:#D5D9E0;
+      --line-2:#E5E8ED;
+      --live:#0B6E4F;
+      --lab:#8A6D1F;
+      --lab-bg:#FAF3E2;
+      --lab-line:#E3D3A6;
+      --focus:#101318;
     }
-
-    html, body { min-height: 100%; }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: var(--ink);
-      background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 50%, var(--bg-3) 100%);
-      background-attachment: fixed;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Floating background blobs */
-    .blob {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.5;
-      pointer-events: none;
-      z-index: 0;
-      animation: float 20s ease-in-out infinite;
-    }
-    .blob-1 { width: 400px; height: 400px; background: var(--accent-1); top: -100px; right: -100px; animation-delay: 0s; }
-    .blob-2 { width: 350px; height: 350px; background: var(--accent-3); bottom: -100px; left: -100px; animation-delay: -5s; }
-    .blob-3 { width: 300px; height: 300px; background: var(--accent-2); top: 40%; left: 60%; animation-delay: -10s; opacity: 0.3; }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(30px, -20px) scale(1.05); }
-      66% { transform: translate(-20px, 30px) scale(0.95); }
+    /* Dark is a legibility affordance for phones at night, not a costume.
+       Same grid, same density, same operational green. Recorded in DESIGN.md. */
+    @media (prefers-color-scheme:dark){
+      :root:not([data-theme="light"]){
+        --ground:#0F1215;
+        --surface:#161A1F;
+        --surface-2:#12161A;
+        --ink:#E9ECEF;
+        --ink2:#9AA2AD;
+        --ink3:#7B838F;
+        --line:#272C33;
+        --line-2:#1E2329;
+        --live:#4FBE92;
+        --lab:#D6B65F;
+        --lab-bg:#241F12;
+        --lab-line:#4A3F22;
+        --focus:#E9ECEF;
+      }
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 24px 100px;
-      position: relative;
-      z-index: 1;
+    *{box-sizing:border-box; margin:0; padding:0}
+
+    /* An explicit `display` on .row/.empty beats the [hidden] attribute's
+       UA default, so the filter would mark buttons active without hiding
+       anything. Restore it. */
+    [hidden]{display:none !important}
+
+    html{-webkit-text-size-adjust:100%}
+    body{
+      background:var(--ground);
+      color:var(--ink);
+      font-family:'Archivo',system-ui,-apple-system,sans-serif;
+      font-size:16px;
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+      font-variant-numeric:tabular-nums;
     }
 
-    /* Header */
-    header {
-      text-align: center;
-      margin-bottom: 80px;
+    .shell{max-width:880px; margin:0 auto}
+
+    /* ---------- status bar (signature move) ---------- */
+    .statusbar{
+      position:sticky; top:0; z-index:20;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      padding:13px 20px;
+      background:var(--surface);
+      border-bottom:1px solid var(--line);
     }
-    .badge {
-      display: inline-block;
-      padding: 6px 14px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 95, 162, 0.3);
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent-2);
-      margin-bottom: 24px;
-      letter-spacing: 0.3px;
+    .statusbar .mark{
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:11.5px; font-weight:500; letter-spacing:.1em;
+      color:var(--ink);
     }
-    h1 {
-      font-size: clamp(38px, 6vw, 64px);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-bottom: 20px;
+    .statusbar .state{
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:11.5px; font-weight:500; letter-spacing:.08em;
+      color:var(--live);
+      display:inline-flex; align-items:center; gap:7px;
+      white-space:nowrap;
     }
-    h1 .gradient {
-      background: linear-gradient(120deg, var(--accent-1) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .beacon{width:7px; height:7px; border-radius:50%; background:var(--live); flex:none}
+
+    /* ---------- thesis ---------- */
+    .thesis{padding:38px 20px 26px}
+    .thesis h1{
+      font-size:clamp(29px,7.4vw,44px);
+      font-weight:700; line-height:1.08; letter-spacing:-.028em;
+      text-wrap:balance; margin-bottom:14px;
     }
-    header p {
-      font-size: clamp(16px, 2vw, 19px);
-      color: var(--ink-soft);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
+    .thesis p{
+      font-size:clamp(15.5px,3.6vw,17px);
+      color:var(--ink2); line-height:1.58; max-width:56ch;
+    }
+    .thesis p strong{color:var(--ink); font-weight:600}
+
+    /* ---------- stat block ---------- */
+    .stats{
+      display:grid; grid-template-columns:repeat(3,1fr);
+      background:var(--surface);
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+    .stat{padding:15px 16px; border-right:1px solid var(--line-2)}
+    .stat:last-child{border-right:0}
+    .stat .v{
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:clamp(19px,5vw,24px); font-weight:500;
+      letter-spacing:-.02em; line-height:1.1; color:var(--ink);
+    }
+    .stat .l{
+      font-size:9.5px; font-weight:600; letter-spacing:.14em;
+      text-transform:uppercase; color:var(--ink3); margin-top:4px;
     }
 
-    /* Section heading */
-    .section-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--ink-soft);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    /* ---------- filter ---------- */
+    .filterbar{
+      display:flex; gap:7px; overflow-x:auto; padding:16px 20px 15px;
+      scrollbar-width:none;
     }
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 2px;
-      background: linear-gradient(to right, rgba(108, 92, 231, 0.3), transparent);
-      border-radius: 2px;
+    .filterbar::-webkit-scrollbar{display:none}
+    .filter{
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+      color:var(--ink2); background:transparent;
+      border:1px solid var(--line); border-radius:4px;
+      padding:8px 13px; min-height:44px;
+      cursor:pointer; white-space:nowrap; flex:none;
+      font-weight:500;
     }
-
-    /* App grid */
-    .apps {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
-      margin-bottom: 72px;
+    .filter:hover{border-color:var(--ink3); color:var(--ink)}
+    .filter[aria-pressed="true"]{
+      background:var(--ink); border-color:var(--ink);
+      color:var(--ground);
     }
 
-    .app-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      border-radius: 24px;
-      padding: 28px;
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      box-shadow: 0 4px 20px rgba(108, 92, 231, 0.06);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 220px;
+    /* ---------- the list ---------- */
+    .colhead{
+      display:grid; grid-template-columns:30px 1fr 78px;
+      gap:12px; padding:0 20px 9px;
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--ink3);
     }
-    .app-card.live { cursor: pointer; }
-    .app-card.live:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--card-shadow);
+    .colhead .c3{text-align:right}
+
+    .list{border-top:1px solid var(--line)}
+
+    .row{
+      display:grid; grid-template-columns:30px 1fr 78px;
+      gap:12px; align-items:center;
+      padding:15px 20px;
+      background:var(--surface);
+      border-bottom:1px solid var(--line-2);
+      text-decoration:none; color:inherit;
+      min-height:64px;
     }
-    .app-card.coming-soon {
-      opacity: 0.85;
-      cursor: default;
+    .row:hover{background:var(--surface-2)}
+    .row:hover .name{color:var(--live)}
+    .row:hover .go{opacity:1; transform:translateX(2px)}
+
+    .idx{
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:11.5px; color:var(--ink3); align-self:start; padding-top:2px;
+    }
+    .name{font-size:15.5px; font-weight:600; letter-spacing:-.012em; line-height:1.28; display:block}
+    .desc{font-size:12.8px; color:var(--ink2); line-height:1.45; margin-top:3px; max-width:58ch; display:block}
+    .cat{
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--ink3); margin-top:6px; display:block;
+    }
+    .end{display:flex; align-items:center; justify-content:flex-end; gap:9px}
+    .go{font-size:15px; color:var(--ink3); opacity:.55; transition:transform .12s ease, opacity .12s ease}
+
+    .pill{
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:9.5px; font-weight:500; letter-spacing:.09em;
+      padding:4px 7px; border-radius:3px; white-space:nowrap;
+      color:var(--lab); background:var(--lab-bg); border:1px solid var(--lab-line);
     }
 
-    .app-icon {
-      font-size: 44px;
-      line-height: 1;
-      margin-bottom: 16px;
-      display: inline-block;
-    }
-    .app-icon.img {
-      width: 44px;
-      height: 44px;
-      border-radius: 11px;
-    }
-    /* Full-bleed photo banner across the top of a card */
-    .app-banner {
-      margin: -28px -28px 18px;
-      height: 132px;
-      background-size: cover;
-      background-position: center 42%;
-      background-repeat: no-repeat;
-    }
-    .app-name {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 8px;
-    }
-    .app-desc {
-      font-size: 14px;
-      color: var(--ink-soft);
-      line-height: 1.5;
-      margin-bottom: 16px;
-      flex: 1;
-    }
-    .app-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      align-self: flex-start;
-    }
-    .app-status .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent-3);
-      box-shadow: 0 0 8px var(--accent-3);
-    }
-    .app-card.coming-soon .app-status .dot {
-      background: var(--accent-4);
-      box-shadow: none;
-    }
-    .app-card.live .app-status { color: #00a89a; }
-    .app-card.coming-soon .app-status { color: #c79a3a; }
+    .row.lab{cursor:default}
+    .row.lab .name{color:var(--ink2)}
+    .row.lab:hover{background:var(--surface)}
+    .row.lab:hover .name{color:var(--ink2)}
 
-    /* Decorative gradient bar on each card */
-    .app-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+    .empty{
+      padding:34px 20px; background:var(--surface);
+      border-bottom:1px solid var(--line-2);
+      color:var(--ink2); font-size:14.5px;
     }
-    .app-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent-4), var(--accent-5), var(--accent-1)); }
-    .app-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-3), var(--accent-2), var(--accent-4)); }
-    .app-card:nth-child(4)::before { background: linear-gradient(90deg, var(--accent-5), var(--accent-1), var(--accent-3)); }
-    /* FSY Card Maker — the guide-cover brand palette */
-    .app-card.fsy::before { background: linear-gradient(90deg, #D0495F, #6DB3C9, #B5CC6A, #E8A33D); }
+    .empty b{color:var(--ink); display:block; margin-bottom:5px; font-weight:600}
 
-    /* SWITCH — the product is glass changing state, so the card does it too:
-       one corridor dissolving between clear and private, wordmark over the top. */
-    .app-card.switch::before {
-      background: linear-gradient(90deg, #3B82F6, #93C5FD, #1e293b);
-      z-index: 2;
+    /* ---------- footer ---------- */
+    footer{
+      padding:26px 20px 46px;
+      border-top:1px solid var(--line);
+      display:flex; flex-wrap:wrap; gap:8px 18px;
+      align-items:baseline; justify-content:space-between;
     }
-    .switch-art {
-      position: relative;
-      /* Bleeds past the card's 28px padding; the card clips it to the radius. */
-      margin: -28px -28px 18px;
-      height: 158px;
-      overflow: hidden;
-      background: #0b1220;
-    }
-    .switch-glass {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    /* The private frame is the base; the clear one fades over it and back. */
-    .switch-glass.clear { animation: switchGlass 7s ease-in-out infinite; }
-    @keyframes switchGlass {
-      0%, 8%    { opacity: 0; }
-      42%, 58%  { opacity: 1; }
-      92%, 100% { opacity: 0; }
-    }
-    .switch-logo {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 170px;
-      height: auto;
-      /* Both phases of the wordmark are now light — grey and white — so the
-         backdrop that has to be fought is the bright frosted pane, not the dark
-         corridor. A tight dark edge plus a soft dark bloom does that; a light
-         halo would earn nothing now that no phase is dark. */
-      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6))
-              drop-shadow(0 3px 12px rgba(0, 0, 0, 0.5));
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .switch-glass.clear { animation: none; opacity: 1; }
+    footer p{font-size:13.5px; color:var(--ink2)}
+    footer a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line)}
+    footer a:hover{border-bottom-color:var(--live); color:var(--live)}
+    footer .meta{
+      font-family:'IBM Plex Mono',ui-monospace,monospace;
+      font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink3);
     }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      margin-top: 60px;
-      color: var(--ink-soft);
-      font-size: 14px;
-    }
-    footer a {
-      color: var(--accent-2);
-      text-decoration: none;
-      font-weight: 600;
-    }
-    footer a:hover { text-decoration: underline; }
+    :focus-visible{outline:2px solid var(--focus); outline-offset:-2px}
 
-    @media (max-width: 600px) {
-      .container { padding: 40px 20px 60px; }
-      header { margin-bottom: 50px; }
+    @media (min-width:620px){
+      .row{grid-template-columns:38px 1fr 96px; padding:16px 24px}
+      .colhead{grid-template-columns:38px 1fr 96px; padding:0 24px 9px}
+      .statusbar, .thesis, .filterbar, footer{padding-left:24px; padding-right:24px}
+      .name{font-size:16.5px}
+      .desc{font-size:13.5px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none !important; transition:none !important}
     }
   </style>
 </head>
 <body>
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
 
-  <div class="container">
-    <header>
-      <div class="badge">✨ AI experiments &amp; tools</div>
-      <h1>Hi, I'm <span class="gradient">Ardie</span>.<br />Welcome to my workshop.</h1>
-      <p>A growing collection of apps and experiments — built with curiosity, AI, and a lot of late-night tinkering.</p>
-    </header>
+  <div class="shell">
 
-    <h2 class="section-title">🛠 Apps</h2>
-    <div class="apps">
-
-      <a href="https://svg-maker.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">🎨</span>
-        <div class="app-name">SVG Maker</div>
-        <div class="app-desc">Turn icon images into clean, editable SVG using Claude vision. Trace, refine, export.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://arcade.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">🕹️</span>
-        <div class="app-name">Arcade</div>
-        <div class="app-desc">Browser games with persistent leaderboards. First cabinet: Hoarder Patrol — defend the house from incoming junk.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://moodcast.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">🌤️</span>
-        <div class="app-name">MoodCast</div>
-        <div class="app-desc">A weather app for public mood. Claude reads the news and forecasts how the world feels today — by topic, with live trends.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://wealthlab.ardiejohnson.com" class="app-card live">
-        <div class="app-banner" style="background-image:url('/img/wealthlab.webp')"></div>
-        <span class="app-icon">📈</span>
-        <div class="app-name">Wealth Lab</div>
-        <div class="app-desc">Play out a lifetime of investing decisions. Pick a persona, choose your mix — index funds, crypto, real estate — and watch it grow through boom and crash. Educational, not advice.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://ripple.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">🌊</span>
-        <div class="app-name">Ripple</div>
-        <div class="app-desc">See where today's choice actually leads. Pick a decision, pick a horizon — 1 to 20 years — and watch two futures diverge across health, wealth, mind, and relationships. Educational, not advice.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://ai-compass.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">🧭</span>
-        <div class="app-name">AI Compass</div>
-        <div class="app-desc">Pick a goal, answer a few questions, and get a personalized AI workflow — tools, steps, and human-review checkpoints built in.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://fsy-card-maker.ardiejohnson.com" class="app-card live fsy">
-        <img class="app-icon img" src="/icons/fsy.svg" alt="FSY Card Maker logo" width="44" height="44">
-        <div class="app-name">FSY Card Maker</div>
-        <div class="app-desc">Build and print FSY conversation cards — a discussion question paired with a scripture, across 12 chapters. Autosave, JSON export/import, PDF export.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://legacy.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">📖</span>
-        <div class="app-name">Legacy</div>
-        <div class="app-desc">A private family archive of two memoirs. Read them with their photographs, search both books at once, or ask a question and get an answer with sources. Password-protected for family.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://artcoach.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">🖼️</span>
-        <div class="app-name">ArtCoach</div>
-        <div class="app-desc">Upload your artwork and a team of AI art experts critiques it — scores, strengths, and practice exercises tuned to your skill level.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://pet2get.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">🐾</span>
-        <div class="app-name">Pet2Get</div>
-        <div class="app-desc">A quick quiz that matches you with your ideal dog or cat breed — 61 dog breeds and 35 cat breeds, scored against your lifestyle.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://closr.ardiejohnson.com" class="app-card live">
-        <img class="app-icon img" src="/icons/closr.svg" alt="Closr logo" width="44" height="44">
-        <div class="app-name">Closr</div>
-        <div class="app-desc">Overnight shutdown checklist with photo & video proof. Staff sign off location by location; the boss gets every report — media and all — automatically.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://losoviedo.com" class="app-card live">
-        <span class="app-icon">🚗</span>
-        <div class="app-name">Los Oviedo Garage</div>
-        <div class="app-desc">A bilingual (English/Spanish) site for a family-run used car dealership and service garage in Salt Lake City. Browse the lot by vehicle, with listings the family updates themselves.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://switch.ardiejohnson.com" class="app-card live switch">
-        <div class="switch-art" aria-hidden="true">
-          <img class="switch-glass private" src="/icons/switch-private.webp" alt="" width="800" height="500" loading="lazy" decoding="async">
-          <img class="switch-glass clear" src="/icons/switch-clear.webp" alt="" width="800" height="500" loading="lazy" decoding="async">
-          <img class="switch-logo" src="/icons/switch-logo.svg" alt="" width="170" height="27">
-        </div>
-        <div class="app-name">SWITCH</div>
-        <div class="app-desc">Intelligent glass that turns from clear to private at the touch of a button. A marketing site for the product, with a demo you can drag and switch yourself.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://QRcodeGen.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">📱</span>
-        <div class="app-name">QR Code Generator</div>
-        <div class="app-desc">Create styled QR codes in seconds. Pick from six dot styles, customize colors and finder patterns, then download as PNG or SVG.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://signflow.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">✍️</span>
-        <div class="app-name">SignFlow</div>
-        <div class="app-desc">Sign any PDF in seconds. It finds every field, walks you through them one by one, and checks nothing was missed — all on your device, nothing uploaded.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <a href="https://nourish-bravely.ardiejohnson.com" class="app-card live">
-        <span class="app-icon">🌱</span>
-        <div class="app-name">Nourish Bravely</div>
-        <div class="app-desc">Recovery support for teens in eating-disorder recovery — and the caregivers and clinicians in their corner. The care team builds the meal plan; teens check in one meal at a time, gently and without shame. Support, not medical advice.</div>
-        <div class="app-status"><span class="dot"></span> Live</div>
-      </a>
-
-      <div class="app-card coming-soon">
-        <span class="app-icon">💡</span>
-        <div class="app-name">More on the way</div>
-        <div class="app-desc">New ideas show up here as they ship. Got an idea? Let me know.</div>
-        <div class="app-status"><span class="dot"></span> In the lab</div>
-      </div>
-
+    <div class="statusbar">
+      <span class="mark">ARDIEJOHNSON.COM</span>
+      <span class="state"><i class="beacon" aria-hidden="true"></i>16 LIVE</span>
     </div>
 
+    <header class="thesis">
+      <h1>Sixteen live apps, built solo.</h1>
+      <p>
+        <strong>I'm not an engineer.</strong> I design and ship small, real products
+        end&#8209;to&#8209;end — with AI as the whole engineering team. Everything below is
+        live right now, and open to try. Tap any row.
+      </p>
+    </header>
+
+    <div class="stats">
+      <div class="stat"><div class="v">16</div><div class="l">Live apps</div></div>
+      <div class="stat"><div class="v">1</div><div class="l">Builder</div></div>
+      <div class="stat"><div class="v">2025</div><div class="l">Shipping since</div></div>
+    </div>
+
+    <div class="filterbar" role="group" aria-label="Filter apps by category">
+      <button class="filter" data-cat="all" aria-pressed="true">All 16</button>
+      <button class="filter" data-cat="tools" aria-pressed="false">Tools</button>
+      <button class="filter" data-cat="life" aria-pressed="false">Life</button>
+      <button class="filter" data-cat="business" aria-pressed="false">Business</button>
+      <button class="filter" data-cat="creative" aria-pressed="false">Creative</button>
+      <button class="filter" data-cat="family" aria-pressed="false">Family</button>
+    </div>
+
+    <div class="colhead" aria-hidden="true">
+      <span>#</span><span>Application</span><span class="c3">Open</span>
+    </div>
+
+    <main class="list" id="list">
+
+      <a class="row" data-cat="life" href="https://nourish-bravely.ardiejohnson.com">
+        <span class="idx">01</span>
+        <span>
+          <span class="name">Nourish Bravely</span>
+          <span class="desc">Recovery support for teens in eating-disorder recovery and their care circle — one gentle meal at a time. Not medical advice.</span>
+          <span class="cat">Life · Health</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="tools" href="https://signflow.ardiejohnson.com">
+        <span class="idx">02</span>
+        <span>
+          <span class="name">SignFlow</span>
+          <span class="desc">Sign any PDF in seconds. It finds every field, walks you through them one by one, and checks nothing was missed — all on your device, nothing uploaded.</span>
+          <span class="cat">Tools</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="business" href="https://closr.ardiejohnson.com">
+        <span class="idx">03</span>
+        <span>
+          <span class="name">Closr</span>
+          <span class="desc">Overnight shutdown checklist with photo and video proof. Staff sign off location by location; the boss gets every report automatically.</span>
+          <span class="cat">Business</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="life" href="https://moodcast.ardiejohnson.com">
+        <span class="idx">04</span>
+        <span>
+          <span class="name">MoodCast</span>
+          <span class="desc">A weather app for public mood. Claude reads the news and forecasts how the world feels today — by topic, with live trends.</span>
+          <span class="cat">Life · Culture</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="life" href="https://wealthlab.ardiejohnson.com">
+        <span class="idx">05</span>
+        <span>
+          <span class="name">Wealth Lab</span>
+          <span class="desc">Play out a lifetime of investing decisions. Pick a persona, choose your mix, and watch it grow through boom and crash. Educational, not advice.</span>
+          <span class="cat">Life · Money</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="life" href="https://ripple.ardiejohnson.com">
+        <span class="idx">06</span>
+        <span>
+          <span class="name">Ripple</span>
+          <span class="desc">See where today's choice actually leads. Pick a decision and a horizon, then watch two futures diverge across health, wealth, mind, and relationships.</span>
+          <span class="cat">Life</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="creative" href="https://artcoach.ardiejohnson.com">
+        <span class="idx">07</span>
+        <span>
+          <span class="name">ArtCoach</span>
+          <span class="desc">Upload your artwork and a team of AI art experts critiques it — scores, strengths, and practice exercises tuned to your skill level.</span>
+          <span class="cat">Creative</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="creative" href="https://svg-maker.ardiejohnson.com">
+        <span class="idx">08</span>
+        <span>
+          <span class="name">SVG Maker</span>
+          <span class="desc">Turn icon images into clean, editable SVG using Claude vision. Trace, refine, export.</span>
+          <span class="cat">Creative · Tools</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="family" href="https://legacy.ardiejohnson.com">
+        <span class="idx">09</span>
+        <span>
+          <span class="name">Legacy</span>
+          <span class="desc">A private family archive of two memoirs. Read them with their photographs, search both books at once, or ask a question and get an answer with sources.</span>
+          <span class="cat">Family · Private</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="business" href="https://switch.ardiejohnson.com">
+        <span class="idx">10</span>
+        <span>
+          <span class="name">SWITCH</span>
+          <span class="desc">Intelligent glass that turns from clear to private at the touch of a button. A marketing site for the product, with a demo you can drag and switch yourself.</span>
+          <span class="cat">Business · Product</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="business" href="https://losoviedo.com">
+        <span class="idx">11</span>
+        <span>
+          <span class="name">Los Oviedo Garage</span>
+          <span class="desc">A bilingual site for a family-run used car dealership and service garage in Salt Lake City. Browse the lot by vehicle, with listings the family updates themselves.</span>
+          <span class="cat">Business · Client</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="tools" href="https://ai-compass.ardiejohnson.com">
+        <span class="idx">12</span>
+        <span>
+          <span class="name">AI Compass</span>
+          <span class="desc">Pick a goal, answer a few questions, and get a personalized AI workflow — tools, steps, and human-review checkpoints built in.</span>
+          <span class="cat">Tools</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="family" href="https://fsy-card-maker.ardiejohnson.com">
+        <span class="idx">13</span>
+        <span>
+          <span class="name">FSY Card Maker</span>
+          <span class="desc">Build and print FSY conversation cards — a discussion question paired with a scripture, across 12 chapters. Autosave, JSON export and import, PDF export.</span>
+          <span class="cat">Family · Faith</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="life" href="https://pet2get.ardiejohnson.com">
+        <span class="idx">14</span>
+        <span>
+          <span class="name">Pet2Get</span>
+          <span class="desc">A quick quiz that matches you with your ideal dog or cat breed — 61 dog breeds and 35 cat breeds, scored against your lifestyle.</span>
+          <span class="cat">Life</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="tools" href="https://QRcodeGen.ardiejohnson.com">
+        <span class="idx">15</span>
+        <span>
+          <span class="name">QR Code Generator</span>
+          <span class="desc">Create styled QR codes in seconds. Pick from six dot styles, customize colors and finder patterns, then download as PNG or SVG.</span>
+          <span class="cat">Tools</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="row" data-cat="creative" href="https://arcade.ardiejohnson.com">
+        <span class="idx">16</span>
+        <span>
+          <span class="name">Arcade</span>
+          <span class="desc">Browser games with persistent leaderboards. First cabinet: Hoarder Patrol — defend the house from incoming junk.</span>
+          <span class="cat">Creative · Games</span>
+        </span>
+        <span class="end"><span class="go" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <div class="row lab" data-cat="none">
+        <span class="idx">&mdash;</span>
+        <span>
+          <span class="name">More on the way</span>
+          <span class="desc">New ideas show up here as they ship. Got one? Let me know.</span>
+        </span>
+        <span class="end"><span class="pill">IN THE LAB</span></span>
+      </div>
+
+      <div class="empty" id="empty" hidden>
+        <b>Nothing in that category yet.</b>
+        Tap <strong>All 16</strong> above to see everything that's live.
+      </div>
+
+    </main>
+
     <footer>
-      <p>Built by <a href="https://github.com/ardiejohnson">@ardiejohnson</a> · Always experimenting</p>
+      <p>Built by <a href="https://github.com/ardiejohnson">@ardiejohnson</a></p>
+      <p class="meta">Salt Lake City · Shipping since 2025</p>
     </footer>
+
   </div>
+
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll('.filter');
+      var rows = document.querySelectorAll('.row[data-cat]');
+      var empty = document.getElementById('empty');
+
+      function apply(cat) {
+        var shown = 0;
+        rows.forEach(function (row) {
+          // "More on the way" belongs only in the unfiltered view.
+          var match = row.classList.contains('lab')
+            ? cat === 'all'
+            : (cat === 'all' || row.dataset.cat === cat);
+          row.hidden = !match;
+          if (match && !row.classList.contains('lab')) shown++;
+        });
+        empty.hidden = shown > 0;
+        buttons.forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b.dataset.cat === cat));
+        });
+      }
+
+      buttons.forEach(function (b) {
+        b.addEventListener('click', function () { apply(b.dataset.cat); });
+      });
+    })();
+  </script>
+
 </body>
 </html>
