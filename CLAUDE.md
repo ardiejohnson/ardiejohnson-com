@@ -1,6 +1,19 @@
 # ArdieWorks — Ardie Johnson's App Portfolio
 # (ArdieWorks = the agentic system that builds, previews, and ships these apps.)
 
+## STOP rules — read these first, every session
+
+1. **Never merge a PR or deploy to production without Ardie reviewing a preview first.**
+   The flow is: branch -> PR -> hand Ardie the Vercel preview URL -> he approves -> then merge.
+   This binds the main session, not just the `promote` agent. A `PreToolUse` hook enforces it.
+2. **If you bypass preview, say so in the same message and say why.**
+   The only good reasons are: Ardie explicitly said "ship it", or production is broken.
+   Bypassing is `PREVIEW_APPROVED=1 <command>` — deliberate and visible, never a habit.
+   An approval for one change is NOT standing approval for the next one.
+3. **Never push directly to `main`.** Always branch, PR, merge.
+4. **Never commit secrets.** Client apps use the anon/publishable key only.
+5. **Confirm before anything destructive** — dropped tables, deleted data, rewritten RLS.
+
 This file records the conventions for my personal app portfolio. Each app is its
 own GitHub repo under the `ardiejohnson` account and deploys to its own subdomain
 of **ardiejohnson.com**. The apex domain is a landing site that links to the apps.
