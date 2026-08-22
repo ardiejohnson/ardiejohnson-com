@@ -1,4 +1,18 @@
 # ArdieWorks — Ardie Johnson's App Portfolio
+
+<!-- ardieworks:ownership -->
+## Who owns this repo's Claude config
+
+Everything under `.claude/` — agents, skills, hooks, and the `hooks` block of
+`settings.json` — is **owned by ArdieWorks HQ** (`github.com/ardiejohnson/ardieworks`).
+Do not edit those here; the next sync will overwrite the change.
+
+To change an agent, skill, or hook: edit it in HQ, let the sync-template Action
+carry it to `app-template`, then run `sync-agents.sh` to fan it out. Sessions
+working in this repo own the **application code**; `.claude/` travels one way,
+from HQ down. (To deliberately pin a file here, put `ardieworks-sync: skip` in it.)
+<!-- /ardieworks:ownership -->
+
 # (ArdieWorks = the agentic system that builds, previews, and ships these apps.)
 
 ## STOP rules — read these first, every session
