@@ -18,6 +18,13 @@ Check, in order of importance:
    If no browser is available, fall back to reasoning about the code and say so.
 4. Broken basics: dead buttons, missing imports, broken links.
 5. Did it do what Ardie actually asked? Compare the change against the stated goal.
+6. Design and clarity — read `DESIGN.md` at the repo root if it exists, then check:
+   - **The 5-second test:** from what's above the fold on a phone, can a brand-new user say what this is, who it's for, and what to tap first? Failing this is a BLOCKER.
+   - **One primary action** per screen, with CTA copy that names the outcome ("Cast today's mood"), not "Get Started" / "Learn More" / "Submit".
+   - **Real empty, loading, and error states** — an empty state should teach the next action, not just say "No data yet".
+   - **Does it match `DESIGN.md`?** Flag anything that contradicts the brief. If there's no `DESIGN.md` at all, say so — that's a WARNING.
+   - **Generic tells:** `Inter`/`system-ui` as the *display* face, stock Tailwind grays with a `blue-600` primary, centered hero + two buttons + three feature cards, repeated `rounded-lg` white cards, purple→blue gradients. These are WARNINGS unless `DESIGN.md` records them as deliberate exceptions.
+   - **Shared bones:** 44px touch targets, body ≥16px on mobile, AA contrast, visible focus states, `prefers-reduced-motion` respected.
 
 Report as a short, prioritized list:
 - BLOCKERS — must fix before shipping

@@ -1,6 +1,6 @@
 ---
 name: audit-app
-description: Run a full quality audit on a portfolio app — Lighthouse scores (performance, accessibility, SEO), a scripted phone-size functionality walkthrough, page-weight breakdown, and a ranked fix list. Use when asked to audit, health-check, or score an app. Read-only by default; fixes only on request via the normal branch → PR → preview flow.
+description: Run a full quality audit on a portfolio app — Lighthouse scores (performance, accessibility, SEO), a scripted phone-size functionality walkthrough, a design and messaging clarity check, page-weight breakdown, and a ranked fix list. Use when asked to audit, health-check, or score an app. Read-only by default; fixes only on request via the normal branch → PR → preview flow.
 ---
 
 # App audit for `<app>.ardiejohnson.com`
@@ -40,12 +40,25 @@ Pull specifics from the JSON, not just scores: for each failing a11y audit list 
 - Console errors + failed/404 requests — but classify them: sandbox-blocked externals are *expected* (and a chance to verify graceful degradation); a 404 on a same-origin file is a real bug (often the favicon)
 - Screenshots of the main view and the core-flow view — they go to Ardie with the report
 
+## 3.5 Design + messaging (form and function)
+Lighthouse scores a page that can still be forgettable and unusable to a newcomer. Read `DESIGN.md` at the repo root, then judge against it — see the **app-design** skill for the full standard.
+
+- **The 5-second test** — from the phone screenshot of the top of the page alone, can a brand-new user say what this is, who it's for, and what to tap first? Failing this is the single highest-impact finding an audit can produce.
+- **Purpose + problem/solution** stated above the fold in the user's words, not feature language
+- **One primary action**, with CTA copy naming the outcome — flag "Get Started" / "Learn More" / "Submit"
+- **First-run instructions** — 3 steps max, in place, no modal wall gating the app
+- **Empty/loading/error states** are real and teach the next action; nothing dead-ends
+- **Matches `DESIGN.md`** — flag contradictions. No `DESIGN.md` at all is itself a finding.
+- **Generic tells** — `Inter`/`system-ui` as the *display* face, stock Tailwind grays + `blue-600`, centered hero + two buttons + three feature cards, repeated `rounded-lg` white cards, purple→blue gradients. Each is a finding unless `DESIGN.md` records it as a deliberate exception.
+- **Shared bones** — 44px touch targets, body ≥16px on mobile, AA contrast, visible focus states, `prefers-reduced-motion` respected
+
 ## 4. The report
 Save as `<app>-audit.md`, send with screenshots (SendUserFile). Structure:
 1. **Scorecard table** — the four Lighthouse categories, with one-phrase "read as" per row
 2. **Functionality checklist** — ✅/⚠️ lines from the walkthrough
-3. **Findings ranked by impact** — each with the plain-language problem, the fix, and the estimated result. Separate a "not worth chasing" section so small stuff doesn't look urgent.
-4. **Bottom line** — one paragraph: is this a quality problem or a weight problem, and the suggested fix order.
+3. **Design + messaging** — the 5-second test verdict first, then clarity and generic-tell findings
+4. **Findings ranked by impact** — each with the plain-language problem, the fix, and the estimated result. Separate a "not worth chasing" section so small stuff doesn't look urgent.
+5. **Bottom line** — one paragraph: is this a clarity problem, a quality problem, or a weight problem, and the suggested fix order.
 Plain language throughout; no jargon walls. State the local-serve caveat.
 
 Bonus when the MCP connectors are up: Vercel runtime errors/build logs and Supabase `get_advisors` (performance + security) add production signal no code scan has.
