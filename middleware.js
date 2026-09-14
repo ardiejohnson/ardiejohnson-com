@@ -21,6 +21,9 @@ export const config = {
   // Everything is behind the gate. The gate page itself is generated
   // here, not served from a file, so there is nothing to exclude.
   matcher: '/(.*)',
+  // Vercel has deprecated the edge runtime for middleware. Node has the
+  // Web Crypto API this file needs, so the switch costs nothing.
+  runtime: 'nodejs',
 };
 
 export default async function middleware(request) {
