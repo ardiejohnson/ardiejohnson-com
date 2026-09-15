@@ -132,6 +132,26 @@ await check('a crafted next field is escaped, not injected', async () => {
   assert.match(body, /value="\/&quot;&gt;&lt;script&gt;/);
 });
 
+// --- the show/hide toggle ---------------------------------------------
+await check('the gate ships a reveal toggle, hidden until JS runs', async () => {
+  const body = await (await middleware(get('/'))).text();
+  assert.match(body, /id="reveal"/);
+  assert.match(body, /aria-label="Show password"/);
+  assert.match(body, /id="eye-open"/);
+  assert.match(body, /id="eye-closed"/);
+  // The button carries `hidden` in the markup so a no-JS visitor never sees
+  // a dead control; the script removes it.
+  assert.match(body, /id="reveal"[\s\S]*?hidden\s*>/);
+});
+
+await check('the toggle swaps icons by attribute, not the .hidden property', async () => {
+  // SVG elements have no `hidden` IDL property. Assigning it silently does
+  // nothing and the icon never changes — this caught exactly that.
+  const body = await (await middleware(get('/'))).text();
+  assert.match(body, /removeAttribute\('hidden'\)/);
+  assert.doesNotMatch(body, /\b(open|closed)\.hidden\s*=/);
+});
+
 // --- misconfiguration fails closed ------------------------------------
 await check('no SITE_PASSWORD -> 503, nothing served', async () => {
   const saved = process.env.SITE_PASSWORD;
@@ -155,4 +175,4 @@ await check('GET /__gate sends you home rather than 404ing', async () => {
   assert.equal(res.headers.get('location'), '/');
 });
 
-console.log(`\n${passed}/17 checks passed`);
+console.log(`\n${passed}/19 checks passed`);

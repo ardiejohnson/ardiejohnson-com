@@ -37,7 +37,7 @@ Set it for **Production** and **Preview**, then redeploy. A few things worth kno
   not a lockout, so a long passphrase is still what actually protects the site.
 - To take the gate off entirely, delete `middleware.js` and merge.
 
-Run `npm test` to check the gate still behaves (17 checks, no network needed).
+Run `npm test` to check the gate still behaves (19 checks, no network needed).
 
 ## Local preview
 

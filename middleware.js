@@ -178,20 +178,69 @@ function gatePage({ destination = '/', error = '' } = {}) {
         <form method="POST" action="${GATE_PATH}" autocomplete="on">
           <input type="hidden" name="next" value="${escapeHtml(destination)}" />
           <label class="label" for="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            autocapitalize="off"
-            autocorrect="off"
-            spellcheck="false"
-            required
-            autofocus
-          />
+          <div class="field">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+              required
+              autofocus
+            />
+            <!-- Revealed by script, so no-JS visitors never see a dead button. -->
+            <button
+              type="button"
+              id="reveal"
+              class="reveal"
+              aria-label="Show password"
+              aria-pressed="false"
+              aria-controls="password"
+              hidden
+            >
+              <svg id="eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M1.8 12S5.8 5 12 5s10.2 7 10.2 7-4 7-10.2 7S1.8 12 1.8 12Z" />
+                <circle cx="12" cy="12" r="3.2" />
+              </svg>
+              <svg id="eye-closed" viewBox="0 0 24 24" aria-hidden="true" hidden>
+                <path d="M1.8 12S5.8 5 12 5s10.2 7 10.2 7-4 7-10.2 7S1.8 12 1.8 12Z" />
+                <circle cx="12" cy="12" r="3.2" />
+                <path d="M4 20 20 4" />
+              </svg>
+            </button>
+          </div>
           ${error ? `<p class="error" role="alert">${escapeHtml(error)}</p>` : ''}
           <button type="submit">Enter</button>
-        </form>`,
+        </form>
+        <script>
+          (function () {
+            var input = document.getElementById('password');
+            var toggle = document.getElementById('reveal');
+            var open = document.getElementById('eye-open');
+            var closed = document.getElementById('eye-closed');
+            if (!input || !toggle) return;
+
+            // SVG elements have no hidden IDL property, only HTML ones do, so
+            // these must go through the attribute or the icon never swaps.
+            var show = function (el, on) {
+              if (on) el.removeAttribute('hidden');
+              else el.setAttribute('hidden', '');
+            };
+
+            show(toggle, true);
+            toggle.addEventListener('click', function () {
+              var reveal = input.type === 'password';
+              input.type = reveal ? 'text' : 'password';
+              toggle.setAttribute('aria-pressed', String(reveal));
+              toggle.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+              show(open, !reveal);
+              show(closed, reveal);
+              input.focus();
+            });
+          })();
+        </script>`,
     }),
     401,
   );
@@ -276,19 +325,34 @@ form{margin-top:22px}
   font-size:11px; letter-spacing:.08em; text-transform:uppercase;
   color:var(--ink2); margin-bottom:7px;
 }
-input[type=password]{
-  width:100%; padding:12px 13px; font-size:16px; font-family:inherit;
+/* An explicit display value beats the [hidden] attribute's UA default, so
+   the reveal button would stay visible without JS. Restore it. */
+[hidden]{display:none !important}
+.field{position:relative}
+.field input{
+  width:100%; padding:12px 50px 12px 13px; font-size:16px; font-family:inherit;
   color:var(--ink); background:var(--ground);
   border:1px solid var(--line); border-radius:0;
 }
-input[type=password]:focus{outline:2px solid var(--ink); outline-offset:-1px}
-button{
+.field input:focus{outline:2px solid var(--ink); outline-offset:-1px}
+.reveal{
+  position:absolute; top:1px; right:1px; bottom:1px; width:46px;
+  display:flex; align-items:center; justify-content:center;
+  background:none; border:0; padding:0; cursor:pointer; color:var(--ink2);
+}
+.reveal:hover{color:var(--ink)}
+.reveal:focus-visible{outline:2px solid var(--ink); outline-offset:-2px}
+.reveal svg{
+  width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+button[type=submit]{
   width:100%; margin-top:14px; padding:12px 16px;
   font-family:inherit; font-size:15px; font-weight:600; cursor:pointer;
   color:var(--surface); background:var(--ink);
   border:1px solid var(--ink); border-radius:0;
 }
-button:hover{opacity:.88}
+button[type=submit]:hover{opacity:.88}
 .error{
   margin-top:12px; font-size:14px; color:var(--warn);
 }
