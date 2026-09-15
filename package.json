@@ -1,0 +1,13 @@
+{
+  "name": "ardiejohnson-com",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Apex landing page for ardiejohnson.com. Static HTML \u2014 the only dependency is the edge middleware that password-protects the site.",
+  "type": "module",
+  "dependencies": {
+    "@vercel/functions": "^3.9.7"
+  },
+  "scripts": {
+    "test": "node test/gate.test.mjs"
+  }
+}
