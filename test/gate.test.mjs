@@ -85,6 +85,19 @@ await check('expired cookie is refused', async () => {
   assert.equal(res.status, 401);
 });
 
+await check('a wrong password costs a second, a right one does not', async () => {
+  const wrongStart = Date.now();
+  await middleware(post({ password: 'wrong', next: '/' }));
+  const wrongMs = Date.now() - wrongStart;
+
+  const rightStart = Date.now();
+  await middleware(post({ password: process.env.SITE_PASSWORD, next: '/' }));
+  const rightMs = Date.now() - rightStart;
+
+  assert.ok(wrongMs >= 950, `wrong answer returned in ${wrongMs}ms, expected a delay`);
+  assert.ok(rightMs < 500, `right answer took ${rightMs}ms, should not be delayed`);
+});
+
 // --- open-redirect safety --------------------------------------------
 await check('off-site redirect targets are refused', async () => {
   for (const target of ['//evil.example', '/\\evil.example', 'https://evil.example', 'evil']) {
@@ -142,4 +155,4 @@ await check('GET /__gate sends you home rather than 404ing', async () => {
   assert.equal(res.headers.get('location'), '/');
 });
 
-console.log(`\n${passed}/16 checks passed`);
+console.log(`\n${passed}/17 checks passed`);

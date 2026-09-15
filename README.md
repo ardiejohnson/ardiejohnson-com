@@ -33,9 +33,11 @@ Set it for **Production** and **Preview**, then redeploy. A few things worth kno
 - **If the variable is missing, nobody gets in** — the site returns a "not
   configured" page rather than falling open.
 - **Search engines can't index the site** while the gate is up.
+- **A wrong password always costs a second.** That slows guessing down; it is
+  not a lockout, so a long passphrase is still what actually protects the site.
 - To take the gate off entirely, delete `middleware.js` and merge.
 
-Run `npm test` to check the gate still behaves (16 checks, no network needed).
+Run `npm test` to check the gate still behaves (17 checks, no network needed).
 
 ## Local preview
 

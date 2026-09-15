@@ -16,6 +16,10 @@ import { next } from '@vercel/functions';
 const COOKIE_NAME = 'aj_gate';
 const SESSION_DAYS = 30;
 const GATE_PATH = '/__gate';
+// A wrong answer always costs a second. Not a lockout — someone running
+// guesses in parallel still gets through that — but it turns a fast online
+// guessing run into a slow one. The passphrase is still the real defence.
+const WRONG_ANSWER_DELAY_MS = 1000;
 
 export const config = {
   // Everything is behind the gate. The gate page itself is generated
@@ -49,6 +53,7 @@ async function handleSubmission(request, password) {
   const destination = safeDestination(form?.get('next'));
 
   if (typeof submitted !== 'string' || !(await secretsMatch(submitted, password))) {
+    await new Promise((resolve) => setTimeout(resolve, WRONG_ANSWER_DELAY_MS));
     return gatePage({
       destination,
       error: 'That password is not right.',
