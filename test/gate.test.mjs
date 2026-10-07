@@ -28,7 +28,7 @@ await check('no cookie -> 401 gate page, site HTML not served', async () => {
   assert.equal(res.status, 401);
   const body = await res.text();
   assert.match(body, /This site is private/);
-  assert.doesNotMatch(body, /Sixteen live apps/);
+  assert.doesNotMatch(body, /Seventeen live apps/);
   assert.equal(res.headers.get('cache-control'), 'no-store');
 });
 
